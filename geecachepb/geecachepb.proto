@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package geecachepb;
+option go_package ="../";
+//使用 message 定义消息类型
+//Request 包含了2个字段,group 和 cache，这与我们之前定义的接口 /_geecache/<group>/<name> 所需的参数吻合
+message Request {
+  string group = 1;
+  string key = 2;
+}
+
+//Response 包含了一个字段 类型为 byte 数组
+message Response {
+  bytes value = 1;
+}
+
+/*
+  如果消息类型是用来远程通信的(Remote Procedure Call, RPC)，可以在 .proto 文件中定义 RPC 服务接口。
+  定义了一个名为GroupCache的RPC服务，提供了 Get接口 ，入参是 Request 返回类型是 Response
+ */
+service GroupCache {
+  rpc Get(Request) returns (Response);
+}
